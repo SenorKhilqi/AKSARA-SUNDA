@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menulis Aksara Sunda - Belajar Aksara Sunda</title>
+    <meta name="description" content="Konverter Aksara Sunda. Ubah aksara Latin ke aksara Sunda atau aksara Sunda ke aksara Latin">
+    <link rel="shortcut icon" href="../image/logo.png" type="image/x-icon">
+    <!-- Using consistent CSS files with other pages -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/menulis.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Belajar Aksara Sunda</h1>
+            <br>
+            <p>Mari Belajar Menulis Aksara Sunda</p>
+        </header>
+        
+        <div class="navigation">
+            <a href="../index.html" class="nav-btn">Beranda</a>
+            <a href="../mengenal.html" class="nav-btn">Mengenal Aksara Sunda</a>
+            <a href="../membaca.html" class="nav-btn">Membaca Aksara Sunda</a>
+            <a href="../konverter/menulis.html" class="nav-btn">Menulis Aksara Sunda</a>
+            <a href="../lagu.html" class="nav-btn">Lagu</a>
+            <a href="../quiz.html" class="nav-btn">Quiz</a>
+        </div>
+        
+        <div class="section">
+            <h2>Menulis Aksara Sunda</h2>
+            
+            <div class="converter-container">
+                <div class="input-area">
+                    <h3>Konverter</h3>
+                    <p>Konversi teks ber-aksara Latin ke aksara Sunda dan sebaliknya.</p>
+                    <textarea name="input" id="input" placeholder="Ketik teks Latin atau teks aksara Sunda Anda di sini untuk mendapatkan hasil konversinya" class="input-text"></textarea>
+                </div>
+                <div id="output-wrap" class="output-area">
+                    <div class="result-header">
+                        <h3>Hasil</h3>
+                        <span id="mode" class="mode-badge">Mode</span>
+                    </div>
+                    <p id="output" class="output-text"><span class="placeholder-text">Masukkan teks di kolom input di atas untuk mendapatkan hasil konversinya di sini.</span></p>
+                </div>
+            </div>
+            
+            <div class="keyboard-section">
+                <h3>Keyboard</h3>
+                <p class="mobile-notice">Geser kanan/kiri untuk menampilkan karakter lainnya</p>
+                <div id="keyboard" class="keyboard-container">
+                    <div id="key-1" class="key-group"></div>
+                    <div id="key-2" class="key-group"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="main-footer">
+        <p> &copy; by Senor D Kilki</p>
+        <p>Belajar Aksara Sunda &copy; by kelompok 4</p>
+    </footer>
+
+    <script src="../script/converter.js"></script>
+    <script>
+        function createRow() {
+            let row = document.createElement('div');
+            $(row).addClass('key-row');
+            return row;
+        }
+
+        function createKey(val, callback) {
+            let btn = document.createElement('button');
+            $(btn).text(val);
+            $(btn).addClass('key-button');
+            $(btn).on('click', callback || function () {
+                $('#input').val($('#input').val() + val);
+                $('#input').trigger('input');
+            });
+            return btn;
+        }
+
+        $('#key-1').append(createRow());
+        $('#key-1>div')[0].append(createKey('é'));
+        for (let i = 3; i < 10; i++)
+            $('#key-1>div')[0].append(createKey(String.fromCharCode(0x1b80 + i)))
+        for (let i = 0x8a, row = 8, ri = 1; i < 0xa1; i++, row--) {
+            if (row == 0) row = 8, ri++;
+            if (row == 8) $('#key-1').append(createRow());
+            $('#key-1>div')[ri].append(createKey(String.fromCharCode(0x1b00 + i)))
+        }
+        $('#key-1').append(createRow());
+        $('#key-1>div')[4].append(createKey('\u1bae'));
+        $('#key-1>div')[4].append(createKey('\u1baf'));
+        let delBtn;
+        $('#key-1>div')[4].append(delBtn = createKey('\u232b', () => {
+            $('#input').val($('#input').val().slice(0, -1));
+            $('#input').trigger('input');
+        }));
+
+        $('#key-2').append(createRow());
+        for (let i = 0xb0, row = 8, ri = 0; i < 0xba; i++, row--) {
+            if (row == 0) row = 8, ri++;
+            if (row == 8) $('#key-2').append(createRow());
+            $('#key-2>div')[ri].append(createKey(String.fromCharCode(0x1b00 + i)));
+        }
+        for (let i of [0x1b81, 0x1b82, 0x1b80])
+            $('#key-2>div')[1].append(createKey(String.fromCharCode(i)));
+        for (let i = 0xa1, row = 6, ri = 2; i < 0xab; i++, row--) {
+            if (row == 0) ri++;
+            if (row == 5) $('#key-2').append(createRow());
+            $('#key-2>div')[ri].append(createKey(String.fromCharCode(0x1b00 + i)));
+        }
+        $('#key-2>div')[3].append(createKey('|'), delBtn.cloneNode(true))
+        
+        let resultOpen = window.innerWidth >= 768 ? true : false;
+        function resultToggle() {
+            $('#output-wrap>div').slideToggle();
+            resultOpen = !resultOpen;
+        }
+
+        $('#input').on('input', () => {
+            if (!resultOpen) resultToggle();
+
+            let input = $('#input').val(),
+                mode = !input ? false : ((input.match(/[\u1b80-\u1bbf]/i)) ? 'latin' : 'sunda'),
+                output = mode == 'latin' ? sundaneseToLatin(input) : (mode == 'sunda' ? latinToSundanese(input) : 'Masukkan teks di kolom input di atas untuk mendapatkan hasil konversinya di sini.');
+
+            $('#mode').text(mode == 'latin' ? 'Sunda > Latin' : (mode == 'sunda' ? 'Latin > Sunda' : 'Mode'));
+            mode ? $('#output').text(output) : $('#output').html(`<span class="placeholder-text">${output}</span>`);
+        });
+    </script>
+</body>
+</html>

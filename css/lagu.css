@@ -1,0 +1,29 @@
+.song {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #D8F3DC;
+    border-radius: 8px;
+}
+
+.song h3 {
+    margin-bottom: 10px;
+    color: #2D6A4F;
+}
+
+.song-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.lyrics {
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .song-content {
+        grid-template-columns: 1fr;
+    }
+}

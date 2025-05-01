@@ -1,0 +1,56 @@
+.quiz-container {
+    margin-bottom: 20px;
+}
+
+.quiz-question {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #D8F3DC;
+    border-radius: 8px;
+}
+
+.question-text {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.options {
+    list-style-type: none;
+}
+
+.option {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.option:hover {
+    background-color: #B7E4C7;
+}
+
+.option.selected {
+    background-color: #2D6A4F;
+    color: white;
+}
+
+.quiz-result {
+    margin-top: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.correct {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.incorrect {
+    background-color: #F44336;
+    color: white;
+}

@@ -1,0 +1,20 @@
+.reading-example {
+    background-color: #D8F3DC;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.reading-example h3 {
+    margin-bottom: 10px;
+    color: #2D6A4F;
+}
+
+.reading-aksara {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    display: inline-block;
+}
